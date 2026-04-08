@@ -4,7 +4,8 @@ import {
 } from '@/stores/windows'
 const windowsStore = useWindowsStore()
 const config = useRuntimeConfig()
-const resumeUrl = `${config.app.baseURL}files/Shlok_Shinde_SWE_Resume.pdf?v=20260408`
+const baseUrl = config.app.baseURL.endsWith('/') ? config.app.baseURL : `${config.app.baseURL}/`
+const resumeUrl = `${baseUrl}files/Shlok_Shinde_SWE_Resume.pdf?v=20260408`
 </script>
 
 <template>

@@ -1,6 +1,7 @@
 <script setup>
 const config = useRuntimeConfig()
-const resumeUrl = `${config.app.baseURL}files/Shlok_Shinde_SWE_Resume.pdf`
+const baseUrl = config.app.baseURL.endsWith('/') ? config.app.baseURL : `${config.app.baseURL}/`
+const resumeUrl = `${baseUrl}files/Shlok_Shinde_SWE_Resume.pdf`
 </script>
 
 <template>
