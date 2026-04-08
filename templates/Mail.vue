@@ -153,7 +153,7 @@ const sendEmail = () => {
     const subject = encodeURIComponent(mailStore.mailSubject || "New Message")
     const sender = mailStore.mailSender ? `From: ${mailStore.mailSender}\n\n` : ""
     const body = encodeURIComponent(`${sender}${mailStore.mailContent || ""}`)
-    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`
+    globalThis.window.location.href = `mailto:${to}?subject=${subject}&body=${body}`
     setTimeout(() => {
         closeWindow()
         mailStore.setMailSubject("")
