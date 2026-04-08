@@ -2,8 +2,8 @@
 const rows = 9
 const cols = 9
 const mineCount = 10
-const mineIcon = "/assets/win95Icons/mine.svg"
-const flagIcon = "/assets/win95Icons/flag.svg"
+import mineIcon from '@/assets/win95Icons/mine.svg'
+import flagIcon from '@/assets/win95Icons/flag.svg'
 
 const board = ref([])
 const gameOver = ref(false)

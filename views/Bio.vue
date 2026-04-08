@@ -1,3 +1,8 @@
+<script setup>
+const config = useRuntimeConfig()
+const resumeUrl = `${config.app.baseURL}files/Shlok_Shinde_SWE_Resume.pdf`
+</script>
+
 <template>
 <div>
     <img class="w-44 h-44 object-cover rounded-sm mb-4 border border-gray-300" src="@/assets/Biography/self.jpg" alt="Shlok Shinde profile photo" />
@@ -158,7 +163,7 @@
 
     <div class="pt-7">
         <h3 class="pb-1"><b>Résumé</b></h3>
-        <a style="color: #ff5733" href="/files/Shlok_Shinde_SWE_Resume.pdf" class="font-thin text-sm pb-2.5">Check out my résumé here.</a>
+        <a style="color: #ff5733" :href="resumeUrl" class="font-thin text-sm pb-2.5">Check out my résumé here.</a>
     </div>
 </div>
 </template>

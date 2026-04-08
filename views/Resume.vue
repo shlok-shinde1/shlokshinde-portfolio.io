@@ -3,7 +3,8 @@ import {
     useWindowsStore
 } from '@/stores/windows'
 const windowsStore = useWindowsStore()
-const resumeUrl = "/files/Shlok_Shinde_SWE_Resume.pdf?v=20260408"
+const config = useRuntimeConfig()
+const resumeUrl = `${config.app.baseURL}files/Shlok_Shinde_SWE_Resume.pdf?v=20260408`
 </script>
 
 <template>

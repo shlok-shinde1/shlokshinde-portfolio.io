@@ -1,3 +1,8 @@
+<script setup>
+const config = useRuntimeConfig()
+const resumeUrl = `${config.app.baseURL}files/Shlok_Shinde_SWE_Resume.pdf`
+</script>
+
 <template>
 <div class="menu" style="z-index: 1000000">
     <div class="sidebar">
@@ -35,7 +40,7 @@
             </div>
         </a>
         <div class="divider"></div>
-        <a href="/files/Shlok_Shinde_SWE_Resume.pdf" target="_blank">
+        <a :href="resumeUrl" target="_blank">
             <div class="bar">
                 <img class="social-image" src="@/assets/win95Icons/resume.png" />
                 <u>R</u>ésumé
