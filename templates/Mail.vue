@@ -58,11 +58,6 @@ const mailSubject = computed({
     set: (value) => mailStore.setMailSubject(value && value.replace(/\s/g, '') ? value : "New Message"),
 })
 
-const mailSender = computed({
-    get: () => mailStore.mailSender,
-    set: (value) => mailStore.setMailSender(value && value.replace(/\s/g, '') ? value : ""),
-})
-
 const mailContent = computed({
     get: () => mailStore.mailContent,
     set: (value) => mailStore.setMailContent(value && value.replace(/\s/g, '') ? value : ""),
@@ -151,13 +146,11 @@ const checkMail = () => {
 const sendEmail = () => {
     const to = "shindeshlok4@gmail.com"
     const subject = encodeURIComponent(mailStore.mailSubject || "New Message")
-    const sender = mailStore.mailSender ? `From: ${mailStore.mailSender}\n\n` : ""
-    const body = encodeURIComponent(`${sender}${mailStore.mailContent || ""}`)
+    const body = encodeURIComponent(mailStore.mailContent || "")
     globalThis.window.location.href = `mailto:${to}?subject=${subject}&body=${body}`
     setTimeout(() => {
         closeWindow()
         mailStore.setMailSubject("")
-        mailStore.setMailSender("")
         mailStore.setMailContent("")
     }, 300)
 }
@@ -167,14 +160,6 @@ const onChangeMailSubject = (e) => {
         mailStore.setMailSubject("New Message")
     } else {
         mailStore.setMailSubject(e.target.value)
-    }
-}
-
-const onChangeMailSender = (e) => {
-    if (e.target.value.replace(/\s/g, '') == "") {
-        mailStore.setMailSender("")
-    } else {
-        mailStore.setMailSender(e.target.value)
     }
 }
 
@@ -320,11 +305,6 @@ onMounted(() => {
                 <div class="subject-container">
                     <p style="margin: 8px">Subject:</p>
                     <input name="entry.609946071" class="subject" v-model="mailSubject" v-on:input="onChangeMailSubject" type="text" required="true" />
-                </div>
-                <hr />
-                <div class="from-container" style="margin-bottom: 2px">
-                    <p style="margin: 8px">From:</p>
-                    <input name="entry.367924729" class="subject" v-model="mailSender" v-on:input="onChangeMailSender" type="email" />
                 </div>
             </div>
 
@@ -515,12 +495,6 @@ hr {
 }
 
 .subject-container {
-    display: flex;
-    height: 35px !important;
-    align-items: center;
-}
-
-.from-container {
     display: flex;
     height: 35px !important;
     align-items: center;
