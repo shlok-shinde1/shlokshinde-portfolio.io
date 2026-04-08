@@ -58,10 +58,8 @@ const mailSubject = computed({
     set: (value) => mailStore.setMailSubject(value && value.replace(/\s/g, '') ? value : "New Message"),
 })
 
-const mailContent = computed({
-    get: () => mailStore.mailContent,
-    set: (value) => mailStore.setMailContent(value && value.replace(/\s/g, '') ? value : ""),
-})
+// Local only — keeps message text isolated from subject / optional From (no Pinia bleed-through)
+const messageBody = ref('')
 
 const style = computed(() => ({
     height: `${h.value}px`,
@@ -146,12 +144,12 @@ const checkMail = () => {
 const sendEmail = () => {
     const to = "shindeshlok4@gmail.com"
     const subject = encodeURIComponent(mailStore.mailSubject || "New Message")
-    const body = encodeURIComponent(mailStore.mailContent || "")
+    const body = encodeURIComponent(messageBody.value || "")
     globalThis.window.location.href = `mailto:${to}?subject=${subject}&body=${body}`
     setTimeout(() => {
         closeWindow()
-        mailStore.setMailSubject("")
-        mailStore.setMailContent("")
+        mailStore.setMailSubject("New Message")
+        messageBody.value = ""
     }, 300)
 }
 
@@ -160,14 +158,6 @@ const onChangeMailSubject = (e) => {
         mailStore.setMailSubject("New Message")
     } else {
         mailStore.setMailSubject(e.target.value)
-    }
-}
-
-const onChangeMailContent = (e) => {
-    if (e.target.value.replace(/\s/g, '') == "") {
-        mailStore.setMailContent("")
-    } else {
-        mailStore.setMailContent(e.target.value)
     }
 }
 
@@ -246,7 +236,7 @@ onMounted(() => {
             'minimize': window.fullscreen == 'minimize',
         }" @click="setActiveWindow" @dragstart="setActiveWindow" @click.native="setActiveWindow">
     <iframe name="hidden_iframe" id="hidden_iframe" style="display: none"></iframe>
-    <form @submit.prevent="sendEmail" class="window-style" id="container">
+    <form @submit.prevent="sendEmail" class="window-style" id="container" autocomplete="off">
         <div id="top-bar" class="top-bar-window" :class="
             windowsStore.activeWindow == window.windowId
                 ? 'top-bar'
@@ -304,11 +294,11 @@ onMounted(() => {
                 <hr />
                 <div class="subject-container">
                     <p style="margin: 8px">Subject:</p>
-                    <input name="entry.609946071" class="subject" v-model="mailSubject" v-on:input="onChangeMailSubject" type="text" required="true" />
+                    <input name="entry.609946071" class="subject" v-model="mailSubject" v-on:input="onChangeMailSubject" type="text" required="true" autocomplete="off" />
                 </div>
             </div>
 
-            <textarea name="entry.863594021" v-model="mailContent" v-on:input="onChangeMailContent"></textarea>
+            <textarea name="mail_message_body" v-model="messageBody" autocomplete="off" spellcheck="true"></textarea>
         </div>
     </form>
 </div>
