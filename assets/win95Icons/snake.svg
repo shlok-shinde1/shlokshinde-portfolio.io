@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Snake icon">
+  <rect width="64" height="64" rx="10" fill="#1f1f1f"/>
+  <path d="M10 38c0-10 8-18 18-18h9c6 0 10-4 10-10h8c0 10-8 18-18 18h-9c-6 0-10 4-10 10s4 10 10 10h18v8H28c-10 0-18-8-18-18z" fill="#30c95d"/>
+  <circle cx="50" cy="18" r="2" fill="#fff"/>
+</svg>
