@@ -60,6 +60,12 @@ const mailSubject = computed({
 
 // Local only — keeps message text isolated from subject / optional From (no Pinia bleed-through)
 const messageBody = ref('')
+// Stops browsers/password managers from injecting saved email/text into the body on load
+const messageBodyReadonly = ref(true)
+
+const unlockMessageBody = () => {
+    messageBodyReadonly.value = false
+}
 
 const style = computed(() => ({
     height: `${h.value}px`,
@@ -141,10 +147,22 @@ const checkMail = () => {
     }
 }
 
+/** Strip leading "From: email@…" lines (autofill); never send those in mailto body. */
+const mailBodyForSend = (raw) => {
+    if (!raw) return ''
+    let t = raw.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n')
+    for (;;) {
+        const m = t.match(/^\s*From:\s*(\S+@\S+)\s*\n?/)
+        if (!m) break
+        t = t.slice(m[0].length)
+    }
+    return t.replace(/^\n+/, '')
+}
+
 const sendEmail = () => {
     const to = "shindeshlok4@gmail.com"
     const subject = encodeURIComponent(mailStore.mailSubject || "New Message")
-    const body = encodeURIComponent(messageBody.value || "")
+    const body = encodeURIComponent(mailBodyForSend(messageBody.value || ""))
     globalThis.window.location.href = `mailto:${to}?subject=${subject}&body=${body}`
     setTimeout(() => {
         closeWindow()
@@ -298,7 +316,21 @@ onMounted(() => {
                 </div>
             </div>
 
-            <textarea name="mail_message_body" v-model="messageBody" autocomplete="off" spellcheck="true"></textarea>
+            <textarea
+                name="mail_message_body"
+                v-model="messageBody"
+                :readonly="messageBodyReadonly"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="true"
+                inputmode="text"
+                data-form-type="other"
+                data-lpignore="true"
+                data-1p-ignore="true"
+                data-bwignore="true"
+                @focus="unlockMessageBody"
+            ></textarea>
         </div>
     </form>
 </div>
