@@ -53,6 +53,21 @@ const ComponentName = props.nameOfWindow
 const w = ref(400)
 const h = ref(400)
 
+const mailSubject = computed({
+    get: () => mailStore.mailSubject,
+    set: (value) => mailStore.setMailSubject(value && value.replace(/\s/g, '') ? value : "New Message"),
+})
+
+const mailSender = computed({
+    get: () => mailStore.mailSender,
+    set: (value) => mailStore.setMailSender(value && value.replace(/\s/g, '') ? value : ""),
+})
+
+const mailContent = computed({
+    get: () => mailStore.mailContent,
+    set: (value) => mailStore.setMailContent(value && value.replace(/\s/g, '') ? value : ""),
+})
+
 const style = computed(() => ({
     height: `${h.value}px`,
     width: `${w.value}px`,
@@ -309,11 +324,11 @@ onMounted(() => {
                 <hr />
                 <div class="from-container" style="margin-bottom: 2px">
                     <p style="margin: 8px">From:</p>
-                    <input name="entry.367924729" class="subject" v-model="mailSender" v-on:input="onChangeMailSender" type="email" required="true" />
+                    <input name="entry.367924729" class="subject" v-model="mailSender" v-on:input="onChangeMailSender" type="email" />
                 </div>
             </div>
 
-            <textarea name="entry.863594021" v-model="mailContent" v-on:input="onChangeMailContent" required="true"></textarea>
+            <textarea name="entry.863594021" v-model="mailContent" v-on:input="onChangeMailContent"></textarea>
         </div>
     </form>
 </div>
